@@ -1,0 +1,4 @@
+*.vcd
+*.vvp
+addd.v
+add_tb.v

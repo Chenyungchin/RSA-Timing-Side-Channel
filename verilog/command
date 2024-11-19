@@ -1,0 +1,1 @@
+iverilog -o RSA_tb.vvp RSA_tb.v RSA.v KeyGen.v PrivateKeyGen.v RSA_encrypt.v RSA_decrypt.v
