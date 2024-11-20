@@ -10,8 +10,14 @@ module KeyGen #(parameter WIDTH = 8)(
     output             finish
 );
 
-// tmp
-assign e = 0;
-assign finish = 0;
+// step1: calculate phi = (p-1)*(q-1)
+// step2: starting from e = 3, find the first e that is coprime with phi
+
+parameter IDLE = 0;
+parameter CALC_PHI = 1;
+parameter FIND_E = 2;
+parameter DONE = 3;
+
+reg [2:0] state, state_nxt;
 
 endmodule
