@@ -17,21 +17,21 @@ end
 
 // =============== instantiate DUT ====================
 // Inputs
-reg   [7:0]  a;
-reg   [7:0]  b;
+reg   [15:0]  a;
+reg   [15:0]  b;
 reg          start;
 
 // Outputs
-wire  [7:0]  gcd;
+wire  [15:0]  gcd;
 wire  finish                              ;
 
 gcd  gcd0 (
     .clk                     ( clk                      ),
     .rst_n                   ( rst_n                    ),
     .start                   ( start                    ),
-    .a                       ( a            [7:0]       ),
-    .b                       ( b            [7:0]       ),
-    .gcd                     ( gcd          [7:0]       ),
+    .a                       ( a            [15:0]       ),
+    .b                       ( b            [15:0]       ),
+    .gcd                     ( gcd          [15:0]       ),
     .finish                  ( finish                   )
 );
 

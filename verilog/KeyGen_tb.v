@@ -42,8 +42,8 @@ initial begin
     q = 0;
     @(posedge clk);
     start = 1;
-    p = 34;
-    q = 12;
+    p = 3;
+    q = 5;
     @(posedge clk);
     start = 0;
     p = 0;

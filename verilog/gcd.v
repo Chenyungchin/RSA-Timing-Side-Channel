@@ -3,10 +3,10 @@ module gcd #(parameter WIDTH = 8) (
     input                    clk,
     input                    rst_n,
     input                    start,
-    input      [  WIDTH-1:0] a, // bigger one
-    input      [  WIDTH-1:0] b, // smaller one
+    input      [2*WIDTH-1:0] a, // bigger one
+    input      [2*WIDTH-1:0] b, // smaller one
     // output
-    output reg [  WIDTH-1:0] gcd,
+    output reg [2*WIDTH-1:0] gcd,
     output reg               finish
 );
 
@@ -15,14 +15,14 @@ parameter IDLE = 0;
 parameter CALC = 1;
 
 // wire and reg
-reg  [       2: 0] state, state_nxt;
-reg  [ WIDTH-1: 0] dividend, dividend_nxt;
-reg  [ WIDTH-1: 0] divisor, divisor_nxt;
-wire [ WIDTH-1: 0] quotient, remainder;
+reg  [        2: 0] state, state_nxt;
+reg  [2*WIDTH-1: 0] dividend, dividend_nxt;
+reg  [2*WIDTH-1: 0] divisor, divisor_nxt;
+wire [2*WIDTH-1: 0] quotient, remainder;
 reg                DivideStart, DivideStart_nxt;
 wire               DivideFinish;
 
-reg  [ WIDTH-1: 0] gcd_nxt;
+reg  [2*WIDTH-1: 0] gcd_nxt;
 reg                finish_nxt;
 
 // state transition
@@ -91,7 +91,7 @@ always @(posedge clk or negedge rst_n) begin
 end
 
 // instantiate Divide module
-Divide #(.WIDTH(WIDTH)) divide0(
+Divide #(.WIDTH(2*WIDTH)) divide0(
     // input
     .clk(clk),
     .rst_n(rst_n),
