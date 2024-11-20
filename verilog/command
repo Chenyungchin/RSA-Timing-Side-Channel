@@ -2,6 +2,8 @@
 iverilog -o Mult_tb.vvp .\Mult_tb.v .\Mult.v  
 ========= Divide ===========
 iverilog -o Divide_tb.vvp .\Divide_tb.v .\Divide.v  
+========= gcd ==========
+iverilog -o gcd_tb.vvp .\gcd_tb.v .\gcd.v .\Divide.v 
 ========= KeyGen ==========
 iverilog -o KeyGen_tb.vvp .\KeyGen_tb.v .\KeyGen.v .\Mult.v
 ========= RSA ============

@@ -21,6 +21,7 @@ parameter FIND_E = 2;
 reg  [        2:0] state, state_nxt;
 wire [2*WIDTH-1:0] phi_out;
 wire               MultFinish;
+wire               DivideFinish;
 
 reg  [2*WIDTH-1:0] phi;
 
@@ -30,8 +31,8 @@ Mult #(.WIDTH(WIDTH)) mult0(
     .clk(clk),
     .rst_n(rst_n),
     .start(start),
-    .in1(p-8'b1),
-    .in2(q-8'b1),
+    .in1(p-1'b1),
+    .in2(q-1'b1),
     // output
     .out(phi_out),
     .finish(MultFinish)
