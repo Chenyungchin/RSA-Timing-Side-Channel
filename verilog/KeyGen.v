@@ -16,8 +16,37 @@ module KeyGen #(parameter WIDTH = 8)(
 parameter IDLE = 0;
 parameter CALC_PHI = 1;
 parameter FIND_E = 2;
-parameter DONE = 3;
 
-reg [2:0] state, state_nxt;
+// reg and wire
+reg  [        2:0] state, state_nxt;
+wire [2*WIDTH-1:0] phi_out;
+wire               MultFinish;
+
+reg  [2*WIDTH-1:0] phi;
+
+// instantiate Mult module
+Mult #(.WIDTH(WIDTH)) mult0(
+    // input
+    .clk(clk),
+    .rst_n(rst_n),
+    .start(start),
+    .in1(p-8'b1),
+    .in2(q-8'b1),
+    // output
+    .out(phi_out),
+    .finish(MultFinish)
+);
+
+
+// ========= Sequential Logic =========
+// phi
+always @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+        phi <= 0;
+    end else begin
+        if (MultFinish) phi <= phi_out;
+        else            phi <= phi;
+    end
+end
 
 endmodule
