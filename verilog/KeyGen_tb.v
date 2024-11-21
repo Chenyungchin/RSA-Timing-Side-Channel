@@ -38,6 +38,7 @@ KeyGen  keygen0 (
 );
 
 // ================== test sequence ====================
+// sample answer: e = 3, d = 2011
 initial begin
     start = 0;
     p = 0;

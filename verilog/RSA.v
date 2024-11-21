@@ -30,21 +30,8 @@ KeyGen keygen0(
     .q(q), // prime number 2
     // output
     .e(e), // public key
-    .finish(KeyGenFinish)
-);
-
-PrivateKeyGen privkeygen0(
-    // input
-    .clk(clk),
-    .rst_n(rst_n),
-    .start(KeyGenFinish),
-    .p(p),
-    .q(q),
-    .e(e), // public key
-    // output
     .d(d), // private key
-    .n(n), // modulus (p*q)
-    .finish(PrivateKeyGenFinish)
+    .finish(KeyGenFinish)
 );
 
 RSA_encrypt rsa_encrypt0( // (c = m^e mod n)
