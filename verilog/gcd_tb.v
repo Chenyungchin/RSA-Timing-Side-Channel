@@ -24,6 +24,7 @@ reg          start;
 // Outputs
 wire  [15:0]  gcd;
 wire  finish                              ;
+wire  [15:0]  s, t;
 
 gcd  gcd0 (
     .clk                     ( clk                      ),
@@ -32,7 +33,9 @@ gcd  gcd0 (
     .a                       ( a            [15:0]       ),
     .b                       ( b            [15:0]       ),
     .gcd                     ( gcd          [15:0]       ),
-    .finish                  ( finish                   )
+    .s                       ( s                         ),
+    .t                       ( t                         ),
+    .finish                  ( finish                    )
 );
 
 // ================== test sequence ====================
@@ -42,8 +45,8 @@ initial begin
     b = 0;
     @(posedge clk);
     start = 1;
-    a = 34;
-    b = 12;
+    a = 3016;
+    b = 3;
     @(posedge clk);
     start = 0;
     a = 0;
