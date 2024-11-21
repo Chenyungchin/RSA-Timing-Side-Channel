@@ -1,13 +1,14 @@
 module KeyGen #(parameter WIDTH = 8)(
     // input
-    input                   clk,
-    input                  rst_n,
-    input                  start,
-    input      [WIDTH-1:0] p, // prime number 1
-    input      [WIDTH-1:0] q, // prime number 2
+    input                    clk,
+    input                    rst_n,
+    input                    start,
+    input      [  WIDTH-1:0] p, // prime number 1
+    input      [  WIDTH-1:0] q, // prime number 2
     // output
-    output reg [WIDTH-1:0] e, // public key
-    output reg             finish
+    output reg [  WIDTH-1:0] e, // public key
+    output reg [2*WIDTH-1:0] d, // private key (is t (mod phi))
+    output reg               finish
 );
 
 // step1: calculate phi = (p-1)*(q-1)
@@ -22,6 +23,7 @@ reg  [2*WIDTH-1:0] phi;
 reg                gcdStart, gcdStart_nxt;
 
 wire [2*WIDTH-1:0] gcd;
+wire [2*WIDTH-1:0] s, t;
 
 // gcdStart
 always @(*) begin
@@ -75,6 +77,20 @@ always @(posedge clk or negedge rst_n) begin
     end
 end
 
+// d
+always @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+        d <= 0;
+    end else begin
+        if (gcdFinish && gcd == 1) begin
+            if ($signed(t) < 0) d <= t + phi;
+            else                d <= t;
+        end else begin
+            d <= 0;
+        end
+    end
+end
+
 // others
 always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
@@ -109,6 +125,8 @@ gcd #(.WIDTH(WIDTH)) gcd0(
     .b({{WIDTH{1'b0}}, e}),
     // output
     .gcd(gcd),
+    .s(s),
+    .t(t),
     .finish(gcdFinish)
 );
 

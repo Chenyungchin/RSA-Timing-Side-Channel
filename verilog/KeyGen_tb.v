@@ -23,6 +23,7 @@ reg          start;
 
 // Outputs
 wire  [7:0]  e;
+wire [15:0]  d;
 wire         finish;
 
 KeyGen  keygen0 (
@@ -32,6 +33,7 @@ KeyGen  keygen0 (
     .p                       ( p                        ),
     .q                       ( q                        ),
     .e                       ( e                        ),
+    .d                       ( d                        ),
     .finish                  ( finish                   )
 );
 
@@ -42,8 +44,8 @@ initial begin
     q = 0;
     @(posedge clk);
     start = 1;
-    p = 3;
-    q = 5;
+    p = 53;
+    q = 59;
     @(posedge clk);
     start = 0;
     p = 0;
