@@ -2,7 +2,7 @@
 `timescale  1ns / 1ps
 `define CYCLE 10.0
 
-module RSA_encrypt_tb;
+module RSA_decrypt_tb;
 
 // ================= clk generation =====================
 reg clk = 1;
@@ -17,48 +17,47 @@ end
 
 // =============== instantiate DUT ====================
 // Inputs
-reg   [15:0]  m;
-reg   [ 7:0]  e;
+reg   [15:0]  c, d;
 reg   [15:0]  n;
 reg           start;
 
 // Outputs
-wire [15:0]  c;
+wire [15:0]  m_decrypted;
 wire         finish;
 
-RSA_encrypt  rsa_encrypt0 (
+RSA_decrypt  rsa_decrypt0 (
     .clk                     ( clk                      ),
     .rst_n                   ( rst_n                    ),
     .start                   ( start                    ),
-    .m                       ( m                        ),
-    .e                       ( e                        ),
-    .n                       ( n                        ),
     .c                       ( c                        ),
+    .d                       ( d                        ),
+    .n                       ( n                        ),
+    .m_decrypted             ( m_decrypted              ),
     .finish                  ( finish                   )
 );
 
 // ================== test sequence ====================
-// sample answer: c = 1394
+// sample answer: m_decrypted = 89
 initial begin
     start = 0;
-    m = 0;
-    e = 0;
+    c = 0;
+    d = 0;
     n = 0;
     @(posedge clk);
     start = 1;
-    m = 89;
-    e = 3;
+    c = 1394;
+    d = 2011;
     n = 3127;
     @(posedge clk);
     start = 0;
-    m = 0;
-    e = 0;
+    c = 0;
+    d = 0;
     n = 0;
 end
 
 // ================== time out ==========================
 initial begin
-    # (10000 * `CYCLE);
+    # (1000000 * `CYCLE);
     $display("\n\033[1;31m=============================================");
 	$display("           Simulation Time Out!      ");
 	$display("=============================================\033[0m");
@@ -66,8 +65,8 @@ initial begin
 end
 
 initial begin
-    $dumpfile("RSA_encrypt_tb.vcd");
-    $dumpvars(0, RSA_encrypt_tb);
+    $dumpfile("RSA_decrypt_tb.vcd");
+    $dumpvars(0, RSA_decrypt_tb);
 end
 
 endmodule

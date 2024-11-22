@@ -3,7 +3,7 @@ module RSA_encrypt #(parameter WIDTH = 8)(
     input                clk,
     input                rst_n,
     input                start,
-    input  [  WIDTH-1:0] m, // original message
+    input  [2*WIDTH-1:0] m, // original message
     input  [  WIDTH-1:0] e, // public key
     input  [2*WIDTH-1:0] n, // modulus (p*q)
     // output
@@ -16,7 +16,7 @@ parameter IDLE = 0;
 parameter CALC = 1;
 
 // ========= wire and reg ==========
-reg  [  WIDTH-1: 0] cnt, cnt_nxt;
+reg  [2*WIDTH-1: 0] cnt, cnt_nxt;
 reg  [        2: 0] state, state_nxt;
 
 reg  [2*WIDTH-1: 0] m_reg, m_nxt;
@@ -49,7 +49,7 @@ always @(*) begin
             state_nxt = CALC;
         end
     end else begin
-        if (cnt == WIDTH-1) begin
+        if (DivideFinish && cnt == e_reg - 1) begin
             state_nxt = IDLE;
         end
     end 
@@ -73,7 +73,7 @@ always @(*) begin
     if (state == IDLE) begin
         cnt_nxt = 0;
     end else begin
-        if (MultFinish) begin
+        if (DivideFinish) begin
             if (cnt < e_reg) begin
                 cnt_nxt = cnt + 1;
             end
@@ -87,7 +87,7 @@ end
 // finish
 always @(*) begin
     finish_nxt = 0;
-    if (state == CALC && DivideFinish && cnt == e_reg) begin
+    if (state == CALC && DivideFinish && cnt == e_reg - 1) begin
         finish_nxt = 1;
     end
 end
@@ -110,7 +110,7 @@ always @(*) begin
     MultStart_nxt = 0;
     if (state == IDLE && start) begin
         MultStart_nxt = 1;
-    end else if (state == CALC && DivideFinish && cnt < e_reg) begin
+    end else if (state == CALC && DivideFinish && cnt < e_reg - 1) begin
         MultStart_nxt = 1;
     end
 end
