@@ -1,0 +1,10 @@
+./verilog/add.v
+./verilog/Divide.v
+./verilog/gcd.v
+./verilog/KeyGen.v
+./verilog/Mult.v
+./verilog/PrivateKeyGen.v
+./verilog/RSA_decrypt.v
+./verilog/RSA_encrypt.v
+./verilog/RSA.v
+./verilog/RSA_sc.v
