@@ -11,6 +11,6 @@ iverilog -o RSA_encrypt_tb.vvp .\RSA_encrypt_tb.v .\RSA_encrypt.v .\Mult.v .\Div
 ========= RSA_decrypt ==========
 iverilog -o RSA_decrypt_tb.vvp .\RSA_decrypt_tb.v .\RSA_decrypt.v .\Mult.v .\Divide.v
 ========= RSA ============
-iverilog -o RSA_tb.vvp RSA_tb.v RSA.v KeyGen.v PrivateKeyGen.v RSA_encrypt.v RSA_decrypt.v
+iverilog -o RSA_tb.vvp RSA_tb.v RSA.v KeyGen.v RSA_encrypt.v RSA_decrypt.v Mult.v Divide.v gcd.v
 vvp RSA_tb.vvp
 gtkwave RSA_tb.vcd
