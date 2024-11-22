@@ -2,7 +2,7 @@
 `timescale  1ns / 1ps
 `define CYCLE 10.0
 
-module KeyGen_tb;
+module RSA_encrypt_tb;
 
 // ================= clk generation =====================
 reg clk = 1;
@@ -17,42 +17,42 @@ end
 
 // =============== instantiate DUT ====================
 // Inputs
-reg   [7:0]  p;
-reg   [7:0]  q;
-reg          start;
+reg   [ 7:0]  m, e;
+reg   [15:0]  n;
+reg           start;
 
 // Outputs
-wire  [7:0]  e;
-wire [15:0]  d;
-wire [15:0]  n;
+wire [15:0]  c;
 wire         finish;
 
-KeyGen  keygen0 (
+RSA_encrypt  rsa_encrypt0 (
     .clk                     ( clk                      ),
     .rst_n                   ( rst_n                    ),
     .start                   ( start                    ),
-    .p                       ( p                        ),
-    .q                       ( q                        ),
+    .m                       ( m                        ),
     .e                       ( e                        ),
-    .d                       ( d                        ),
     .n                       ( n                        ),
+    .c                       ( c                        ),
     .finish                  ( finish                   )
 );
 
 // ================== test sequence ====================
-// sample answer: e = 3, d = 2011
+// sample answer: c = 1394
 initial begin
     start = 0;
-    p = 0;
-    q = 0;
+    m = 0;
+    e = 0;
+    n = 0;
     @(posedge clk);
     start = 1;
-    p = 53;
-    q = 59;
+    m = 89;
+    e = 3;
+    n = 3127;
     @(posedge clk);
     start = 0;
-    p = 0;
-    q = 0;
+    m = 0;
+    e = 0;
+    n = 0;
 end
 
 // ================== time out ==========================
@@ -65,8 +65,8 @@ initial begin
 end
 
 initial begin
-    $dumpfile("KeyGen_tb.vcd");
-    $dumpvars(0, KeyGen_tb);
+    $dumpfile("RSA_encrypt_tb.vcd");
+    $dumpvars(0, RSA_encrypt_tb);
 end
 
 endmodule

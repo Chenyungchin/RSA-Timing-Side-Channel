@@ -12,7 +12,7 @@ module RSA_decrypt #(parameter WIDTH = 8)(
 );
 
 // tmp
-assign m_decrypted = 0;
+assign m_decrypted =;
 assign finish = 0;
 
 endmodule

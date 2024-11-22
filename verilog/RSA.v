@@ -13,7 +13,7 @@ module RSA #(parameter WIDTH = 8)(
     
 );
 
-wire KeyGenFinish, PrivateKeyGenFinish, EncryptFinish;
+wire KeyGenFinish, EncryptFinish;
 wire [  WIDTH-1:0] e; // public key
 wire [2*WIDTH-1:0] d; // private key (d = e^-1 mod (p-1)*(q-1))
 wire [2*WIDTH-1:0] n; // modulus (p*q)
@@ -31,6 +31,7 @@ KeyGen keygen0(
     // output
     .e(e), // public key
     .d(d), // private key
+    .n(n), // modulus (p*q)
     .finish(KeyGenFinish)
 );
 
@@ -38,7 +39,7 @@ RSA_encrypt rsa_encrypt0( // (c = m^e mod n)
     // input
     .clk(clk),
     .rst_n(rst_n),
-    .start(PrivateKeyGenFinish),
+    .start(KeyGenFinish),
     .m(m), // original message
     .e(e), // public key
     .n(n), // modulus (p*q)

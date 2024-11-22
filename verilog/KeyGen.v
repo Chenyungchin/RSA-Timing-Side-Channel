@@ -8,6 +8,7 @@ module KeyGen #(parameter WIDTH = 8)(
     // output
     output reg [  WIDTH-1:0] e, // public key
     output reg [2*WIDTH-1:0] d, // private key (is t (mod phi))
+    output reg [2*WIDTH-1:0] n, // modulus (p*q)
     output reg               finish
 );
 
@@ -16,7 +17,8 @@ module KeyGen #(parameter WIDTH = 8)(
 
 // reg and wire
 wire [2*WIDTH-1:0] phi_out;
-wire               MultFinish;
+wire [2*WIDTH-1:0] n_out;
+wire               MultPhiFinish, MultNFinish;
 wire               gcdFinish;
 
 reg  [2*WIDTH-1:0] phi;
@@ -28,7 +30,7 @@ wire [2*WIDTH-1:0] s, t;
 // gcdStart
 always @(*) begin
     gcdStart_nxt = 1'b0;
-    if (MultFinish) begin
+    if (MultPhiFinish) begin
         gcdStart_nxt = 1'b1;
     end else if (gcdFinish && gcd != 1) begin
         gcdStart_nxt = 1'b1;
@@ -41,8 +43,18 @@ always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
         phi <= 0;
     end else begin
-        if (MultFinish) phi <= phi_out;
-        else            phi <= phi;
+        if (MultPhiFinish) phi <= phi_out;
+        else               phi <= phi;
+    end
+end
+
+// n
+always @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+        n <= 0;
+    end else begin
+        if (MultNFinish) n <= n_out;
+        else             n <= n;
     end
 end
 
@@ -103,7 +115,7 @@ end
 // =========== Module Instantiation ===========
 
 // instantiate Mult module
-Mult #(.WIDTH(WIDTH)) mult0(
+Mult #(.WIDTH(WIDTH)) mult_phi(
     // input
     .clk(clk),
     .rst_n(rst_n),
@@ -112,7 +124,19 @@ Mult #(.WIDTH(WIDTH)) mult0(
     .in2(q-1'b1),
     // output
     .out(phi_out),
-    .finish(MultFinish)
+    .finish(MultPhiFinish)
+);
+
+Mult #(.WIDTH(WIDTH)) mult_n(
+    // input
+    .clk(clk),
+    .rst_n(rst_n),
+    .start(start),
+    .in1(p),
+    .in2(q),
+    // output
+    .out(n_out),
+    .finish(MultNFinish)
 );
 
 // instantiate gcd module
