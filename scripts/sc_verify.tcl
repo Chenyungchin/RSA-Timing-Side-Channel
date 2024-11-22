@@ -7,6 +7,8 @@ reset ~rst_n
 
 assume {p_1 != q_1 && p_2 != q_2};
 
+assume {assumePrime_p1 && assumePrime_q1 && assumePrime_p2 && assumePrime_q2};
+
 assert -name information_flow {finish_1 == finish_2};
 
 set_engine_mode {B Ht Mp}

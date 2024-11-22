@@ -52,4 +52,67 @@ RSA rsa2(
 );
 
 
+reg isPrime_p1;
+reg isPrime_q1;
+reg isPrime_p2;
+reg isPrime_q2;
+
+reg finish_p1;
+reg finish_q1;
+reg finish_p2;
+reg finish_q2;
+
+reg assumePrime_p1;
+reg assumePrime_q1;
+reg assumePrime_p2;
+reg assumePrime_q2;
+
+CheckPrime check_p1(
+    // input
+    .clk(clk),
+    .rst_n(rst_n),
+    .start(1'b1), 
+    .num(p_1),
+    // output
+    .IsPrime(isPrime_p1),
+    .finish(finish_p1),
+    .AssumePrime(assumePrime_p1)
+);
+
+CheckPrime check_q1(
+    // input
+    .clk(clk),
+    .rst_n(rst_n),
+    .start(1'b1), 
+    .num(q_1),
+    // output
+    .IsPrime(isPrime_q1),
+    .finish(finish_q1),
+    .AssumePrime(assumePrime_q1)
+);
+
+CheckPrime check_p2(
+    // input
+    .clk(clk),
+    .rst_n(rst_n),
+    .start(1'b1), 
+    .num(p_2),
+    // output
+    .IsPrime(isPrime_p2),
+    .finish(finish_p2),
+    .AssumePrime(assumePrime_p2)
+);
+
+CheckPrime check_q2(
+    // input
+    .clk(clk),
+    .rst_n(rst_n),
+    .start(1'b1), 
+    .num(q_2),
+    // output
+    .IsPrime(isPrime_q2),
+    .finish(finish_q2),
+    .AssumePrime(assumePrime_q2)
+);
+
 endmodule
