@@ -24,10 +24,6 @@ module top #(parameter WIDTH = 8)(
     
 );
 
-wire [2*WIDTH-1:0] m_decrypted_1;
-wire [2*WIDTH-1:0] m_decrypted_2; 
-wire               finish_1;
-wire               finish_2;
 
 RSA rsa1(
     // input
