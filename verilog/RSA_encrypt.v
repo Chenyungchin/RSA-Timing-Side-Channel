@@ -37,6 +37,9 @@ wire               DivideFinish;
 // for finish
 reg                finish_nxt;
 
+// ========= assignment ========
+assign c = c_reg;
+
 
 // state transition
 always @(*) begin
