@@ -51,10 +51,5 @@ RSA rsa2(
     .finish(finish_2)
 );
 
-// TODO assume inputs are prime numbers
-
-assume property (p_1 != q_1 && p_2 != q_2);
-
-assert property (finish_1 == finish_2);
 
 endmodule
