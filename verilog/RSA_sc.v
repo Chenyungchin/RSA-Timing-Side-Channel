@@ -1,5 +1,5 @@
 // Self composition of two RSA modules with p, q as high security inputs
-module top #(parameter WIDTH = 8)(
+module RSA_sc #(parameter WIDTH = 8)(
     // input
     input                clk,
     input                rst_n,
@@ -51,16 +51,6 @@ RSA rsa2(
     .finish(finish_2)
 );
 
-
-reg isPrime_p1;
-reg isPrime_q1;
-reg isPrime_p2;
-reg isPrime_q2;
-
-reg finish_p1;
-reg finish_q1;
-reg finish_p2;
-reg finish_q2;
 
 reg assumePrime_p1;
 reg assumePrime_q1;

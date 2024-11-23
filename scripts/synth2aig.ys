@@ -1,0 +1,6 @@
+read_verilog -sv verilog/Divide.v verilog/add.v verilog/gcd.v verilog/KeyGen.v verilog/Mult.v verilog/RSA_decrypt.v verilog/RSA_encrypt.v verilog/RSA.v
+prep -top RSA
+flatten
+techmap
+aigmap
+write_verilog flattened/RSA_flattened.v

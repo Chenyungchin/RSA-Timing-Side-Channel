@@ -94,6 +94,7 @@ end
 
 // c
 always @(*) begin
+    c_nxt = 1;
     if (state == IDLE) begin
         c_nxt = 1;
     end else begin

@@ -1,0 +1,1 @@
+python3.11 src/instr_taint_logic.py --input flattened/RSA_flattened.v --output flattened/RSA_flattened_t.v
