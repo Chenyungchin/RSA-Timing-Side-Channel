@@ -24,19 +24,19 @@ Default bit width
 ## Verilog Hierarchy
 For Self-Composition:
 ```
-RSA_sc.v
-├── RSA.v
-│   ├── KeyGen.v
-|   |   ├── Mult.v
-|   |   ├── gcd.v
-|   |   |   └── Divide.v
-│   ├── RSA_encrypt.v
-|   |   ├── Mult.v
-|   |   └── Divide.v
-│   ├── RSA_encrypt.v
-|   |   ├── Mult.v
-|   |   └── Divide.v
-└── CheckPrime.v
+RSA_sc
+├── RSA
+│   ├── KeyGen
+|   |   ├── Mult
+|   |   ├── gcd
+|   |   |   └── Divide
+│   ├── RSA_encrypt
+|   |   ├── Mult
+|   |   └── Divide
+│   ├── RSA_encrypt
+|   |   ├── Mult
+|   |   └── Divide
+└── CheckPrime
 ```
 For Taint Analysis:
 ```
