@@ -6,3 +6,5 @@
 ./verilog/RSA_encrypt.v
 ./verilog/RSA.v
 ./verilog/RSA_sc.v
+./verilog/CheckPrime.v
+./verilog/CheckPrime_comb.v

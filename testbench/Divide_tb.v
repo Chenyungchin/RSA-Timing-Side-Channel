@@ -1,12 +1,8 @@
-<<<<<<< HEAD
-=======
-@@ -0,0 +1,65 @@
->>>>>>> 83ee1f1d728a9e2ffd49f4c516550913875dc804
 //~ `New testbench
 `timescale  1ns / 1ps
 `define CYCLE 10.0
 
-module CheckPrime_tb;
+module Divide_tb;
 
 // ================= clk generation =====================
 reg clk = 1;
@@ -21,40 +17,44 @@ end
 
 // =============== instantiate DUT ====================
 // Inputs
-reg   [ 7:0]  num;
-reg           start;
+reg   [7:0]  dividend;
+reg   [7:0]  divisor;
+reg          start;
 
 // Outputs
-wire         IsPrime;
-wire         finish;
-wire         AssumePrime;
+wire  [7:0]  quotient;
+wire  [7:0]  remainder;
+wire  finish                              ;
 
-CheckPrime  checkprime0 (
+Divide  div0 (
     .clk                     ( clk                      ),
     .rst_n                   ( rst_n                    ),
     .start                   ( start                    ),
-    .num                     ( num                      ),
-    .IsPrime                 ( IsPrime                  ),
-    .finish                  ( finish                   ),
-    .AssumePrime             ( AssumePrime            )
+    .dividend                ( dividend     [7:0]       ),
+    .divisor                 ( divisor      [7:0]       ),
+    .quotient                ( quotient     [7:0]       ),
+    .remainder               ( remainder    [7:0]       ),
+    .finish                  ( finish                   )
 );
 
 // ================== test sequence ====================
-// sample answer: 7 is prime
 initial begin
     start = 0;
-    num = 0;
+    dividend = 0;
+    divisor = 0;
     @(posedge clk);
     start = 1;
-    num = 7;
+    dividend = 34;
+    divisor = 12;
     @(posedge clk);
     start = 0;
-    num = 0;
+    dividend = 0;
+    divisor = 0;
 end
 
 // ================== time out ==========================
 initial begin
-    # (50000 * `CYCLE);
+    # (10000 * `CYCLE);
     $display("\n\033[1;31m=============================================");
 	$display("           Simulation Time Out!      ");
 	$display("=============================================\033[0m");
@@ -62,8 +62,8 @@ initial begin
 end
 
 initial begin
-    $dumpfile("CheckPrime_tb.vcd");
-    $dumpvars(0, CheckPrime_tb);
+    $dumpfile("Divide_tb.vcd");
+    $dumpvars(0, Divide_tb);
 end
 
 endmodule
