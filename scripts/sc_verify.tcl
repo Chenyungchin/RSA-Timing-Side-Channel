@@ -1,5 +1,5 @@
 analyze -sv -f verilog/files.f
-elaborate -top top
+elaborate -top RSA_sc
 
 clock clk 
 reset ~rst_n
@@ -7,7 +7,7 @@ reset ~rst_n
 
 assume {p_1 != q_1 && p_2 != q_2};
 
-assume {assumePrime_p1 && assumePrime_q1 && assumePrime_p2 && assumePrime_q2};
+assume {KeyGenStart |-> (assumePrime_p1 && assumePrime_q1 && assumePrime_p2 && assumePrime_q2)};
 
 assert -name information_flow {finish_1 == finish_2};
 
@@ -38,6 +38,8 @@ visualize -get_value p_2 -radix 10
 visualize -get_value q_2 -radix 10
 
 visualize -get_value m -radix 2
+
+visualize -get_value start -radix 2
 
 visualize -get_value finish_1 -radix 2
 visualize -get_value finish_2 -radix 2

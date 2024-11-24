@@ -94,6 +94,7 @@ end
 
 // m_decrypted
 always @(*) begin
+    m_decrypted_nxt = m_decrypted_reg;
     if (state == IDLE) begin
         m_decrypted_nxt = 1;
     end else begin
@@ -107,7 +108,7 @@ end
 
 // MultStart
 always @(*) begin
-    MultStart_nxt = 0;
+    MultStart_nxt = MultStart;
     if (state == IDLE && start) begin
         MultStart_nxt = 1;
     end else if (state == CALC && DivideFinish && cnt < d_reg - 1) begin
