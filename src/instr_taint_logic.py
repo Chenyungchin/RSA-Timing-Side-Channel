@@ -31,11 +31,14 @@ class TaintLogicConfig:
     
     
 def t_name(name: str) -> str:
+    const = re.compile(r"\d+\'[b|h|d][0-9a-fA-Fx]+")
+    if const.match(name):
+        return f"1'h0"
     return f"{name}__t"
     
     
 def parse_operand(operand):
-    variable = re.sub(r"\s*\[\d+\]", "", operand)
+    variable = re.sub(r"\s*\[[\d:]+\]", "", operand)
     bitselect = operand.replace(variable, "")
     return variable, bitselect
     
@@ -79,10 +82,16 @@ def t_assign(l, const, fout):
     lhs = lhs.replace("assign", "")
     lhs_str = ""
     rhs_str = ""
-    print(l)
     if "{" in lhs:
         assert("}" in lhs)
         # Handle variable concatenation
+        lhs = lhs.replace("{", "").replace("}", "").replace(",", " ").strip()
+        lhs_names = lhs.split()
+        lhs_str += "{"
+        for lhs_name in lhs_names:
+            lhs_var, lhs_bit = parse_operand(lhs_name.strip())
+            lhs_str += f"{t_name(lhs_var)}{lhs_bit}, "
+        lhs_str = lhs_str[:-2] + "}"
     else:
         lhs_var, lhs_bit = parse_operand(lhs.strip())
         lhs_str = f"{t_name(lhs_var)}{lhs_bit}"
@@ -90,17 +99,40 @@ def t_assign(l, const, fout):
     if "{" in rhs:
         assert("}" in rhs)
         # Handle variable concatenation
+        rhs = rhs[:rhs.find(";")]
+        rhs = rhs.replace("{", "").replace("}", "").replace(",", " ").strip()
+        rhs_names = rhs.split()
+        rhs_str += "{"
+        for rhs_name in rhs_names:
+            rhs_var, rhs_bit = parse_operand(rhs_name.strip())
+            rhs_str += f"{t_name(rhs_var)}{rhs_bit}, "
+        rhs_str = rhs_str[:-2] + "}"
     else:
         rhs = rhs[:rhs.find(";")]
         if "~" in rhs:
             rhs = rhs.replace("~", "")
             rhs_var, rhs_bit = parse_operand(rhs.strip())
-            rhs_str = f"~{t_name(rhs_var)}{rhs_bit}"
+            # not gate, taint will propagate in all cases
+            rhs_str = f"{t_name(rhs_var)}{rhs_bit}"
         elif "&" in rhs:
+            # a & b
             r_name1, r_name2 = rhs.split("&")
+            r_name1 = r_name1.strip()
+            r_name2 = r_name2.strip()
             r_var1, r_bit1 = parse_operand(r_name1.strip())
             r_var2, r_bit2 = parse_operand(r_name2.strip())
-            rhs_str = f"{t_name(r_var1)}{r_bit1} & {t_name(r_var2)}{r_bit2}"
+            # a_t & b_t
+            rhs_str += f"({t_name(r_var1)}{r_bit1} & {t_name(r_var2)}{r_bit2})"
+            # a_t & b
+            rhs_str += f" | ({t_name(r_var1)}{r_bit1} & {r_name2})"
+            # a & b_t
+            rhs_str += f" | ({r_name1} & {t_name(r_var2)}{r_bit2})"
+        else:
+            rhs_var, rhs_bit = parse_operand(rhs.strip())
+            rhs_str = f"{t_name(rhs_var)}{rhs_bit}"
+            
+    if not rhs_str:
+        print(l)
     
     fout.write(f"  assign {lhs_str} = {rhs_str};\n")
 
@@ -125,7 +157,7 @@ def add_taint_logic(filein, fileout, *, cfg: TaintLogicConfig):
     
     endmodule = re.compile(r"\s*endmodule")
     
-    const = re.compile(r"\d+\'[b|h][0-9a-fA-F]+")
+    const = re.compile(r"\d+\'[b|h|d][0-9a-fA-Fx]+")
 
 
     with open(filein, "r") as fin, open(fileout, "w") as fout:
@@ -172,6 +204,7 @@ def add_taint_logic(filein, fileout, *, cfg: TaintLogicConfig):
                 lines = itertools.chain([l], lines)
                 break
 
+            l = l.replace("\\", "").replace(".", "_")
             if decl_reg.match(l) and (reg := cfg.parse_reg(l)):
                 fout.write(l)
                 tainted_name = t_name(reg.name)
@@ -181,6 +214,7 @@ def add_taint_logic(filein, fileout, *, cfg: TaintLogicConfig):
                     fout.write(f"  reg {tainted_name};\n")
                     
             if decl_wire.match(l) and (wire := cfg.parse_wire(l)):
+                l = l.replace("\\", "").replace(".", "_")
                 fout.write(l)
                 tainted_name = t_name(wire.name)
                 if "input" in l:
@@ -212,6 +246,7 @@ def add_taint_logic(filein, fileout, *, cfg: TaintLogicConfig):
                 in_always = False
                 continue
             
+            
             if skipline.match(l):
                 fout.write(l)
                 if in_always:
@@ -225,13 +260,16 @@ def add_taint_logic(filein, fileout, *, cfg: TaintLogicConfig):
             if "always" in l:
                 assert(in_always == False)
                 in_always = True
+                l = l.replace("\\", "").replace(".", "_")
                 always_str_list.append(l)
                 
             if "<=" in l:
                 assert(in_always)
+                l = l.replace("\\", "").replace(".", "_")
                 always_str_list.append(l)
             
             elif "assign" in l:
+                l = l.replace("\\", "").replace(".", "_")
                 if in_always:
                     for line in always_str_list:
                         fout.write(line)
@@ -241,7 +279,7 @@ def add_taint_logic(filein, fileout, *, cfg: TaintLogicConfig):
                 else:
                     fout.write(l)
                     t_assign(l, const, fout)
-                
+        fout.write("endmodule\n")
             
             
                 
