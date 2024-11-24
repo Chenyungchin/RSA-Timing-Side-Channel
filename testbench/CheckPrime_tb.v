@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-@@ -0,0 +1,65 @@
->>>>>>> 83ee1f1d728a9e2ffd49f4c516550913875dc804
 //~ `New testbench
 `timescale  1ns / 1ps
 `define CYCLE 10.0
