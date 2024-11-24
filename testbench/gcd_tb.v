@@ -46,7 +46,7 @@ initial begin
     @(posedge clk);
     start = 1;
     a = 3016;
-    b = 3;
+    b = 27;
     @(posedge clk);
     start = 0;
     a = 0;

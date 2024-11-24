@@ -12,9 +12,10 @@ module gcd #(parameter WIDTH = 8) (
     output reg               finish
 );
 
-// The worst case of the number of iterations is 3.33*(2*WIDTH) + 1.68 based on chatgpt's analysis. 
+// DIVIDE cycle = 2*WIDTH + 1
+// The worst case of the number of iterations is 3.33*(2*WIDTH)*DIVIDE_CYCLE + 1.68 based on chatgpt's analysis. 
 // The worst case happens when a, b fit to the Fibonacci sequence.
-// Here we set the number of iterations to 4*(2*WIDTH).
+// Here we set the number of iterations to 14*WIDTH*WIDTH.
 
 
 // parameter
@@ -22,7 +23,7 @@ parameter STATE_IDLE = 0;
 parameter STATE_CALC = 1;
 parameter STATE_HOLD = 2;
 
-parameter MAX_ITER = 4*(2*WIDTH);
+parameter MAX_ITER = 14*WIDTH*WIDTH;
 
 // assignment 
 assign s = s2;
