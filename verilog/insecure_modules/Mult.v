@@ -43,6 +43,9 @@ always @(*) begin
         in1_nxt = in1;
         in2_nxt = in2;
     end
+    if (state == CALC) begin
+        in1_nxt = in1_reg >> 1;
+    end
 end
 
 // output
@@ -50,8 +53,8 @@ always @(*) begin
     if (state == IDLE) begin
         out_nxt = 0;
     end else begin
-        if (in1_reg[cnt]) out_nxt = out + (in2_reg << cnt);
-        else          out_nxt = out;
+        if (in1_reg[0]) out_nxt = out + (in2_reg << cnt);
+        else            out_nxt = out;
     end
 end
 
