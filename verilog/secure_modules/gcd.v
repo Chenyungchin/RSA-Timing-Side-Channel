@@ -44,6 +44,8 @@ reg  [2*WIDTH-1: 0] s1, s2, s3, t1, t2, t3;
 reg  [2*WIDTH-1: 0] s1_nxt, s2_nxt, s3_nxt, t1_nxt, t2_nxt, t3_nxt;
 reg  [2*WIDTH-1: 0] cnt, cnt_nxt;
 
+reg  [2*WIDTH-1: 0] iter_cnt, iter_cnt_nxt;
+
 // state transition
 always @(*) begin
     state_nxt = state;
@@ -51,7 +53,7 @@ always @(*) begin
         state_nxt = STATE_CALC;
     end else if (state == STATE_CALC && DivideFinish && remainder == 0) begin
         state_nxt = STATE_HOLD;
-    end else if (state == STATE_HOLD && cnt == MAX_ITER-1) begin
+    end else if (state == STATE_HOLD && iter_cnt == MAX_ITER-1) begin
         state_nxt = STATE_IDLE;
     end
 end
@@ -90,7 +92,7 @@ always @(*) begin
         gcd_nxt = divisor;
     end else if (state == STATE_HOLD) begin
         gcd_nxt = gcd;
-        if (cnt == MAX_ITER-1) begin
+        if (iter_cnt == MAX_ITER-1) begin
             finish_nxt = 1'b1;
         end
     end
@@ -100,7 +102,7 @@ end
 always @(*) begin
     cnt_nxt = cnt;
     if (state == STATE_CALC && DivideFinish && remainder != 0) cnt_nxt = cnt + 1;
-    else if (state == STATE_HOLD && cnt == MAX_ITER-1) cnt_nxt = 0;
+    else if (state == STATE_CALC && DivideFinish && remainder == 0) cnt_nxt = 0;
 end
 
 always @(*) begin
@@ -130,6 +132,14 @@ always @(*) begin
     end
 end
 
+// iter_cnt
+always @(*) begin
+    iter_cnt_nxt = 0;
+    if (state != STATE_IDLE) begin
+        iter_cnt_nxt = iter_cnt + 1;
+    end
+end
+
 // ================== Sequential Logic ==================
 always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
@@ -140,6 +150,7 @@ always @(posedge clk or negedge rst_n) begin
         gcd         <= 0;
         finish      <= 0;
         cnt         <= 0;
+        iter_cnt    <= 0;
     end else begin
         state       <= state_nxt;
         dividend    <= dividend_nxt;
@@ -148,6 +159,7 @@ always @(posedge clk or negedge rst_n) begin
         gcd         <= gcd_nxt;
         finish      <= finish_nxt;
         cnt         <= cnt_nxt;
+        iter_cnt    <= iter_cnt_nxt;
     end
 end
 
