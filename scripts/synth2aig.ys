@@ -3,4 +3,4 @@ prep -top RSA
 flatten
 techmap
 aigmap
-write_verilog flattened/RSA_flattened.v
+write_verilog flattened/RSA.v

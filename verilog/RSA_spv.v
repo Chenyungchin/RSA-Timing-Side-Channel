@@ -121,11 +121,13 @@ reg assumePrime_q;
 
 CheckPrime_comb check_p(
         .num(p),
+        .start(KeyGenStart),
         .AssumePrime(assumePrime_p)
 );
 
 CheckPrime_comb check_q(
         .num(q),
+        .start(KeyGenStart),
         .AssumePrime(assumePrime_q)
 );
 
