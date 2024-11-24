@@ -8,7 +8,7 @@ assume {p!=q};
 
 assume {KeyGenStart |-> (assumePrime_p && assumePrime_q)};
 
-assume {~clk__t && ~rst_n__t && ~KeyGenStart__t && p__t==8'b1 && q__t==8'b1 && m__t==8'b0};
+assume {~clk__t && ~rst_n__t && ~KeyGenStart__t && p__t==8'd255 && q__t==8'd255 && m__t==8'b0};
 
 assert -name information_flow {~finish__t};
 
@@ -40,7 +40,7 @@ visualize -get_value q__t -radix 2
 
 visualize -get_value m -radix 2
 
-visualize -get_value start KeyGenStart-radix 2
+visualize -get_value KeyGenStart -radix 2
 
 visualize -get_value finish -radix 2
 visualize -get_value finish__t -radix 2
