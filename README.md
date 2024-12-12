@@ -1,9 +1,9 @@
 # RSA-Timing-Side-Channel
-This project aims to investigate on timing side channel on RSA hardware algorithms using self-composition and taint analysis. Our works are listed as follows:
-* Implemented an RSA module (that is prone to timing side channel) using verilog
-* Instantiated two RSA modules and Carried out self composition using JasperGold to check possible information leakage
-* Synthesized the RSA module into gate level netlist and added taint signals for taint analysis using JasperGold to check possible information leakage
-* Based on the counter-examples provided in self composition and taint analysis, implemented an RSA module that is resilient to timing side channel.
+This project aims to investigate on timing side-channel on RSA hardware algorithms using self-composition and taint analysis. Our works are listed as follows:
+* Implemented an RSA module (that is prone to timing side-channel) using Verilog
+* Instantiated two RSA modules and Carried out self-composition using JasperGold to check possible information leakage
+* Synthesized the RSA module into gate-level netlist and added taint signals for taint analysis using JasperGold to check possible information leakage
+* Based on the counter-examples provided in self-composition and taint analysis, implemented an RSA module that is resilient to timing side-channel.
 
 ## Verilog Implementation
 Our RSA module did the following three tasks:
@@ -17,10 +17,10 @@ Default bit width:
 
 ## Taint Analysis
 For taint analysis, we first synthesize the input RTL module ($\texttt{rtl.v}$) into gate-level netlist with the Yosys synthesis tool and elaborate the gate-level netlist with gate-level taint logic, resulting in the tainted module $\texttt{tainted.v}$. 
-Then the model checking is performed using the commercial model checker JasperGold with a TLC file specifying the parameters of the verification engines, assumptions, and assertions for the constant time property.
+Then the model checking is performed using the commercial model checker JasperGold with a TLC file specifying the parameters of the verification engines, assumptions, and assertions for the constant-time property.
 
 ## Self Composition
-Similar to taint analysis, self composition is done by querying model checking on the self composition module ($\texttt{sc.v}$) converted from the input RTL ($\texttt{rtl.v}$).
+Similar to taint analysis, self-composition is done by querying model checking on the self-composition module ($\texttt{sc.v}$) converted from the input RTL ($\texttt{rtl.v}$).
 
 ## Verilog Hierarchy
 For Self-Composition:
@@ -44,6 +44,31 @@ For Taint Analysis:
 RSA_taint
 ├── RSA_t (RSA module that is first flattened to AIG and then parsed with taint logic)
 └── CheckPrime
+```
+
+## Taint Propagation Logic Instrumentation
+
+(1) Flatten the Verilog modules into AIG
+```
+yosys ./scripts/synth2aig
+```
+(2) Add taint propagation logic
+```
+./scripts/add_taint_logic.sh
+```
+
+## How to run the code
+* Verification with JasperGold's SPV
+```
+./scripts/jg.sh ./scripts/spv_verify.tcl    
+```
+* Verification with self-composition
+```
+./scripts/jg.sh ./scripts/sv_verify.tcl
+```
+* Verification with taint analysis
+```
+./scipts/jg.sh ./scripts/taint_verify.tcl
 ```
 
 ### Please see our project report for more details.
