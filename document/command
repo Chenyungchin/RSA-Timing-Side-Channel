@@ -1,16 +1,16 @@
 ========= Mult ============
-iverilog -o Mult_tb.vvp .\Mult_tb.v .\Mult.v  
+iverilog -o Mult_tb.vvp .\Mult_tb.v ../verilog/secure_modules/Mult.v
 ========= Divide ===========
-iverilog -o Divide_tb.vvp .\Divide_tb.v .\Divide.v  
+iverilog -o Divide_tb.vvp .\Divide_tb.v ../verilog/secure_modules/Divide.v  
 ========= gcd ==========
-iverilog -o gcd_tb.vvp .\gcd_tb.v .\gcd.v .\Divide.v 
+iverilog -o gcd_tb.vvp .\gcd_tb.v ../verilog/secure_modules/gcd.v ../verilog/secure_modules/Divide.v 
 ========= KeyGen ==========
-iverilog -o KeyGen_tb.vvp .\KeyGen_tb.v .\KeyGen.v .\Mult.v .\gcd.v .\Divide.v
+iverilog -o KeyGen_tb.vvp KeyGen_tb.v ../verilog/secure_modules/KeyGen.v ../verilog/secure_modules/Mult.v ../verilog/secure_modules/gcd.v ../verilog/secure_modules/Divide.v 
 ========= RSA_encrypt ==========
-iverilog -o RSA_encrypt_tb.vvp .\RSA_encrypt_tb.v .\RSA_encrypt.v .\Mult.v .\Divide.v
+iverilog -o RSA_encrypt_tb.vvp RSA_encrypt_tb.v  ../verilog/secure_modules/RSA_encrypt.v ../verilog/secure_modules/Mult.v ../verilog/secure_modules/Divide.v
 ========= RSA_decrypt ==========
-iverilog -o RSA_decrypt_tb.vvp .\RSA_decrypt_tb.v .\RSA_decrypt.v .\Mult.v .\Divide.v
+iverilog -o RSA_decrypt_tb.vvp RSA_decrypt_tb.v  ../verilog/secure_modules/RSA_decrypt.v ../verilog/secure_modules/Mult.v ../verilog/secure_modules/Divide.v 
 ========= RSA ============
-iverilog -o RSA_tb.vvp RSA_tb.v RSA.v KeyGen.v RSA_encrypt.v RSA_decrypt.v Mult.v Divide.v gcd.v
+iverilog -o RSA_tb.vvp RSA_tb.v ../verilog/RSA.v ../verilog/secure_modules/KeyGen.v ../verilog/secure_modules/RSA_encrypt.v ../verilog/secure_modules/RSA_decrypt.v ../verilog/secure_modules/Mult.v ../verilog/secure_modules/Divide.v ../verilog/secure_modules/gcd.v
 vvp RSA_tb.vvp
 gtkwave RSA_tb.vcd

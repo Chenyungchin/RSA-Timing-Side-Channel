@@ -39,7 +39,7 @@ visualize -get_value q_2 -radix 10
 
 visualize -get_value m -radix 2
 
-visualize -get_value start -radix 2
+visualize -get_value KeyGenStart -radix 2
 
 visualize -get_value finish_1 -radix 2
 visualize -get_value finish_2 -radix 2

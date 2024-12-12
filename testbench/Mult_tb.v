@@ -42,7 +42,7 @@ initial begin
     b = 0;
     @(posedge clk);
     start = 1;
-    a = 34;
+    a = 57;
     b = 12;
     @(posedge clk);
     start = 0;

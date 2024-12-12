@@ -25,10 +25,6 @@ parameter STATE_HOLD = 2;
 
 parameter MAX_ITER = 14*WIDTH*WIDTH;
 
-// assignment 
-assign s = s2;
-assign t = t2;
-
 // wire and reg
 reg  [        2: 0] state, state_nxt;
 reg  [2*WIDTH-1: 0] dividend, dividend_nxt;
@@ -46,6 +42,10 @@ reg  [2*WIDTH-1: 0] s1_nxt, s2_nxt, s3_nxt, t1_nxt, t2_nxt, t3_nxt;
 reg  [2*WIDTH-1: 0] cnt, cnt_nxt;
 
 reg  [2*WIDTH-1: 0] iter_cnt, iter_cnt_nxt;
+
+// assignment 
+assign s = s2;
+assign t = t2;
 
 // state transition
 always @(*) begin

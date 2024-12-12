@@ -1,5 +1,5 @@
 //~ `New testbench
-`timescale  1ns / 1ps
+`timescale  1ns / 100ps
 `define CYCLE 10.0
 
 module KeyGen_tb;
@@ -57,7 +57,7 @@ end
 
 // ================== time out ==========================
 initial begin
-    # (10000 * `CYCLE);
+    # (500000 * `CYCLE);
     $display("\n\033[1;31m=============================================");
 	$display("           Simulation Time Out!      ");
 	$display("=============================================\033[0m");

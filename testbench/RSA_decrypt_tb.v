@@ -1,5 +1,5 @@
 //~ `New testbench
-`timescale  1ns / 1ps
+`timescale  1ns / 100ps
 `define CYCLE 10.0
 
 module RSA_decrypt_tb;
@@ -57,7 +57,7 @@ end
 
 // ================== time out ==========================
 initial begin
-    # (500000 * `CYCLE);
+    # (5000000 * `CYCLE);
     $display("\n\033[1;31m=============================================");
 	$display("           Simulation Time Out!      ");
 	$display("=============================================\033[0m");

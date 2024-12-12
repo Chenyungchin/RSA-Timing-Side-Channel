@@ -16,10 +16,6 @@ module gcd #(parameter WIDTH = 8) (
 parameter IDLE = 0;
 parameter CALC = 1;
 
-// assignment 
-assign s = s2;
-assign t = t2;
-
 // wire and reg
 reg  [        2: 0] state, state_nxt;
 reg  [2*WIDTH-1: 0] dividend, dividend_nxt;
@@ -35,6 +31,10 @@ reg                finish_nxt;
 reg  [2*WIDTH-1: 0] s1, s2, s3, t1, t2, t3;
 reg  [2*WIDTH-1: 0] s1_nxt, s2_nxt, s3_nxt, t1_nxt, t2_nxt, t3_nxt;
 reg  [2*WIDTH-1: 0] cnt, cnt_nxt;
+
+// assignment 
+assign s = s2;
+assign t = t2;
 
 // state transition
 always @(*) begin

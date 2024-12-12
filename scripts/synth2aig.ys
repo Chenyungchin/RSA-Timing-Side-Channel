@@ -1,6 +1,6 @@
-read_verilog -sv verilog/Divide.v verilog/add.v verilog/gcd.v verilog/KeyGen.v verilog/Mult.v verilog/RSA_decrypt.v verilog/RSA_encrypt.v verilog/RSA.v
+read_verilog -sv verilog/insecure_modules/Divide.v verilog/insecure_modules/gcd.v verilog/insecure_modules/KeyGen.v verilog/insecure_modules/Mult.v verilog/insecure_modules/RSA_decrypt.v verilog/insecure_modules/RSA_encrypt.v verilog/RSA.v
 prep -top RSA
 flatten
 techmap
 aigmap
-write_verilog flattened/RSA_flattened.v
+write_verilog flattened/RSA.v
