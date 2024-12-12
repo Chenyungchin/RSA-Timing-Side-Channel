@@ -15,7 +15,8 @@ module KeyGen #(parameter WIDTH = 8)(
 // step1: calculate phi = (p-1)*(q-1)
 // step2: starting from e = 3, find the first e that is coprime with phi
 
-localparam MAX_ITER = 5000;
+// max iteration = 2^(WIDTH−1) · 14 · WIDTH^2 + 100
+localparam MAX_ITER = (1 << (WIDTH-1)) * 14 * WIDTH * WIDTH + 100;
 
 // reg and wire
 wire [2*WIDTH-1:0] phi_out;
@@ -29,7 +30,7 @@ reg                gcdStart, gcdStart_nxt;
 wire [2*WIDTH-1:0] gcd;
 wire [2*WIDTH-1:0] s, t;
 
-reg  [31 : 0]      iter_cnt;
+reg  [127 : 0]     iter_cnt;
 
 // gcdStart
 always @(*) begin
