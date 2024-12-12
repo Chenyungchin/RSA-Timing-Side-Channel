@@ -71,4 +71,52 @@ yosys ./scripts/synth2aig
 ./scipts/jg.sh ./scripts/taint_verify.tcl
 ```
 
+## How to specify either the insecure of the secure RSA core for verification
+* Insecure RSA: In `verilog/files.f`, uncomment the insecure RSA modules and comment the secure ones.
+```
+./verilog/insecure_modules/Divide.v
+./verilog/insecure_modules/gcd.v
+./verilog/insecure_modules/KeyGen.v
+./verilog/insecure_modules/Mult.v
+./verilog/insecure_modules/RSA_decrypt.v
+./verilog/insecure_modules/RSA_encrypt.v
+./verilog/RSA.v
+./verilog/RSA_sc.v
+./verilog/RSA_spv.v
+./verilog/CheckPrime.v
+./verilog/CheckPrime_comb.v
+```
+* Secure RSA: In `verilog/files.f`, uncomment the secure RSA modules and comment the insecure ones.
+```
+./verilog/secure_modules/Divide.v
+./verilog/secure_modules/gcd.v
+./verilog/secure_modules/KeyGen.v
+./verilog/secure_modules/Mult.v
+./verilog/secure_modules/RSA_decrypt.v
+./verilog/secure_modules/RSA_encrypt.v
+./verilog/RSA.v
+./verilog/RSA_sc.v
+./verilog/RSA_spv.v
+./verilog/CheckPrime.v
+./verilog/CheckPrime_comb.v
+```
+
+## How to change the RSA bit-width
+* Taint Analysis: change the default bit-width of the RSA module in `RSA.v`
+  ```
+  module RSA #(parameter WIDTH = YOUR_SPECIFIED_WIDTH)(
+  ...
+  ```
+* Self-Composition: change the default bit-width of the RSA module in `RSA_sc.v`
+  ```
+  module RSA_sc #(parameter WIDTH = YOUR_SPECIFIED_WIDTH)(
+  ...
+  ```
+* JasperGold's SPV: change the default bit-width of the RSA module in `RSA_spv.v`
+  ```
+  module RSA_spv #(parameter WIDTH = YOUR_SPECIFIED_WIDTH)(
+  ...
+  ```
+
 ### Please see our project report for more details.
+https://github.com/Chenyungchin/RSA-Timing-Side-Channel/blob/main/document/project%20report.pdf
